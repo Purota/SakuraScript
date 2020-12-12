@@ -1,0 +1,180 @@
+ID: yurina-o-n-1
+Name: "Slash"
+Type: ATK
+Range: 3-4
+Damage: 3/1
+
+ID: yurina-o-n-2
+Name: "Brandish"
+Type: ATK
+Range: 3
+Damage: 2/2
+Description: "Forced: Resolve - This attack gains +1/+0 if your Life is 3 or less."
+Script:
+{
+    IF SELF.LIFE < 4 {
+        THIS.GET(1/0);
+    }
+}
+
+ID: yurina-o-n-3
+Name: "Hilt Strike"
+Type: ATK
+Range: 1-2
+Damage: 2/1
+Description: "After Attack: Resolve - The next attack you make this turn gains +1/+0 if your Life is 3 or less."
+Script:
+{
+    AFTER_ATK {
+        IF SELF.LIFE < 4 {
+            NEXT_ATK.GET(1/0);
+        }
+    }
+}
+
+ID: yurina-o-n-4
+Name: "Art of Drawing"
+Type: ATK / THR
+Range: 2-4
+Damage: 4/3
+Description: "Forced: If the current Distance is 2 or less, this attack gets -1/-1."
+Script:
+{
+    IF DISTANCE < 3 {
+        THIS.GET(-1/-1);
+    }
+}
+
+ID: yurina-o-n-5
+Name: "Vivacity"
+Type: ACT
+Description: "Gain 1 Vigor.\nIncrease the Range of your next non-Special attack from a non-Yurina Megami this turn by 1 in the close direction, and it gains No Reactions (Normal)."
+Script:
+{
+    SELF.VIGOR.GAIN(1);
+    NEXT_ATK(1, NOT_OWNER, NORMAL).RANGE_INCREASE(1, 0);
+    NEXT_ATK(1, NOT_OWNER, NORMAL).NO_REACT(NORMAL);
+}
+
+ID: yurina-o-n-6
+Name: "Overawe"
+Type: ENH
+Charge: 2
+Description: "Unguarded\nDisenchant: You attack with \"Range: 1-4, Damage: 3/-\"."
+Script:
+{
+    THIS.UNGUARDED();
+    DISENCHANT {
+        SELF.GENERATE_ATK(1-4, 3/-);
+    }
+}
+
+ID: yurina-o-n-7
+Name: "Spirit of Fire"
+Type: ENH / THR
+Charge: 4
+Description: "Ongoing: Resolve - Your attacks from non-Yurina Megami gain +1/+1 and Overwhelm if your Life is 3 or less."
+Script:
+{
+    ONGOING {
+        IF SELF.LIFE < 4 {
+            NEXT_ATK(INF, NOT_OWNER).GET(1/1);
+            NEXT_ATK(INF, NOT_OWNER).OVERWHELM();
+        }
+    }
+}
+
+ID: yurina-o-s-1
+Name: "Tsukikage Crush"
+Flare: 7
+Type: ATK
+Range: 3-4
+Damage: 4/4
+
+ID: yurina-o-s-2
+Name: "Uranami Storm"
+Flare: 3
+Type: ATK / REA
+Range: 0-10
+Damage: 2/-
+Description: "Terminal\nAfter Attack: The attack this card was played as a Reaction to gets -2/+0."
+Script:
+{
+    SELF.END_PHASE();
+    AFTER_ATK {
+        REACTED.GET(-2/0);
+    }
+}
+
+ID: yurina-o-s-3
+Name: "Ukifune Serene"
+Flare: 2
+Type: ACT
+Description: "Shadow (5)¨ Your Aura\nImmediate Resurgence: Resolve - Your Life becomes 3 or less (from 4 or more)."
+Script:
+{
+    SHADOW -5-> SELF.AURA;
+    THIS.RESURGENCE(IMMEDIATE) ON SELF.LIFE <= 4;
+}
+
+ID: yurina-o-s-4
+Name: "Yurina's Final Blow"
+Flare: 5
+Type: ATK / THR
+Range: 1-4
+Damage: 5/5
+Description: "Forced: Resolve - You can't play this card unless your Life is 3 or less."
+Script:
+{
+    THIS.FORBID_PLAY() ON SELF.LIFE > 3;
+}
+
+ID: yurina-a1-n-1
+Name: "Wild Swing"
+Type: ATK
+Range: 2
+Damage: 2/1
+Description: "Forced: Resolve - If your Life is 3 or less, this attack gains +0/+2 and No Reactions."
+Script:
+{
+    IF SELF.LIFE < 4 {
+        THIS.GET(0/2);
+        THIS.NO_REACT();
+    }
+}
+
+ID: yurina-a1-n-6
+Name: "Outrage"
+Type: ENH / REA
+Charge: 1
+Description: "Disenchant: You attack with \"Range: 0-4, Damage: 1/-, No Reactions, After Attack: Flinch your opponent.\""
+Script:
+{
+    DISENCHANT {
+        SELF.GENERATE_ATK(
+            0-4,
+            1/-, 
+            {
+                THIS.NO_REACT();
+                AFTER_ATK {
+                    OPP.FLINCH();
+                }
+            }
+        );
+    }
+}
+
+ID: yurina-a1-s-1
+Name: "Unrefined Uranami Storm"
+Flare: 5
+Type: ATK / REA
+Range: 0-10
+Damage: 3/-
+Description: "Terminal\nAfter Attack: The attack this card was played as a Reaction to gets -3/+0."
+Script:
+{
+    SELF.END_PHASE();
+    AFTER_ATK {
+        REACTED.GET(-3/0);
+    }
+}
